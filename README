@@ -1,0 +1,121 @@
+Kiril Tzvetanov Goguev
+Oct 25th,2015
+
+Project Description:
+Puzzle Framework implementing various code puzzles.
+
+Uses a factory method to create instances of various implemented puzzles(so far only one... HappyNumbers). 
+Each puzzle implements a Puzzle interface with methods exposed to get a description, get the current configuration of a puzzle instance, solve the puzzle and get a solution.
+Includes a lot of unit tests.
+
+Current Implementations:
+HappyNumbers
+
+Build Tool: Maven 3
+Built on JDK 1.7
+
+Dependent on: 
+Junit 4.12
+Apache Log4j2
+
+Required Resource files
+----------------
+PuzzleDescriptions.xml - This file is required by all Puzzles, calling getDescription will read from this xml file and display to the user the description of the type of problem.
+log4j2.xml - This file configures the apache log4j2 logger.. currently set to Info mode and writes to terminal and to a file in the main directory of the project.
+
+
+Package/Class structure
+
+
+com.awesome.puzzle.driver
+--------------------------
+Contains Entrypoint.java which serves as the main runner for using the puzzle framework.
+
+Currently setup to run the demo for Happy Numbers range [1 - 1000]
+
+com.awesome.puzzle.exceptions
+-----------------------------
+Contains 3 custom Exception classes: BadRangeException, NotImplementedException, NotSolvedException
+
+BadRangeException is thrown whenever you try to initialize a puzzle that uses ranges with bad parameters. Like HappyNumbers for example requires a Start and a End range 
+Thrown when: Ranges are negative, End range is smaller than the Start range
+
+NotImplementedException is thrown when you try to create a puzzle that has not yet been implemented or completed..
+
+NotSolvedException is thrown when you try to get a solution or show a solution before it has been solved.
+
+com.awesome.puzzle.model
+-----------------------------
+Contains PuzzleFactory, Puzzle interface and PuzzleTypes enum.
+Responsible for representing the puzzles.
+
+com.awesome.puzzle.solver
+-------------------------
+Contains only HappyNumbers puzzle.
+Implements the Puzzle interface for each puzzle
+
+com.awesome.puzzle.tests.driver
+-------------------------------
+Contains PuzzleRunnerTest.java
+
+com.awesome.puzzle.tests.model
+--------------------------------
+Contains PuzzleFactoryTest.java
+Responsible for unit testing the PuzzleFactory
+
+com.awesome.puzzle.tests.solver
+Contains HappyNumbersTest.java
+Responsible for unit testing the HappyNumbers puzzle.
+
+Automated Junit Tests
+----------------------
+
+This Framework uses Junit 4.12 to unit test the classes and various functions. Note that all private methods are tested via the public methods which call them.
+There are 19 unit tests trying to verify that the PuzzleFramework works as intended.. instanciates the right class, throws the right exceptions, solves the problem correctly etc..
+
+Cobertura report can be generated using 
+mvn cobertura:cobertura
+
+
+
+Running The program
+--------------------
+In a terminal run the following command:
+
+mvn test
+
+
+This will compile, run all 19 tests and execute the maindriver of the program to print out the Happy Numbers for range 1-1000.
+
+[INFO] --- exec-maven-plugin:1.1.1:java (default) @ puzzles ---
+23:25:01.995 [com.awesome.puzzle.driver.Entrypoint.main()] INFO  com.awesome.puzzle.model.PuzzleFactory - Attempting to create a HAPPYNUMBERS puzzle with the following paramters: range [1-1000]
+23:25:02.025 [com.awesome.puzzle.driver.Entrypoint.main()] INFO  com.awesome.puzzle.driver.Entrypoint - 
+A happy number is a number defined by the following process: Starting with any positive integer, replace the number by the sum of the squares of its digits, and repeat the process until the number either equals 1 
+(where it will stay), or it loops endlessly in a cycle which does not include 1. Those numbers for which this process ends in 1 are happy numbers, while those thatdo not end in 1 are unhappy numbers (or sad numbers). --Wikipedia
+23:25:02.025 [com.awesome.puzzle.driver.Entrypoint.main()] INFO  com.awesome.puzzle.driver.Entrypoint - solving..
+23:25:02.035 [com.awesome.puzzle.driver.Entrypoint.main()] INFO  com.awesome.puzzle.driver.Entrypoint - ----Solution ----
+23:25:02.035 [com.awesome.puzzle.driver.Entrypoint.main()] INFO  com.awesome.puzzle.driver.Entrypoint - For:HAPPYNUMBERS puzzle instance with range = [ 1 - 1000]
+23:25:02.035 [com.awesome.puzzle.driver.Entrypoint.main()] INFO  com.awesome.puzzle.driver.Entrypoint - 
+HappyNumbers:[1, 7, 10, 13, 19, 23, 28, 31, 32, 44, 49,
+68, 70, 79, 82, 86, 91, 94, 97, 100, 103, 109, 129, 130, 133, 139, 167, 176, 188
+, 190, 192, 193, 203, 208, 219, 226, 230, 236, 239, 262, 263, 280, 291, 293, 301
+, 302, 310, 313, 319, 320, 326, 329, 331, 338, 356, 362, 365, 367, 368, 376, 379
+, 383, 386, 391, 392, 397, 404, 409, 440, 446, 464, 469, 478, 487, 490, 496, 536
+, 556, 563, 565, 566, 608, 617, 622, 623, 632, 635, 637, 638, 644, 649, 653, 655
+, 656, 665, 671, 673, 680, 683, 694, 700, 709, 716, 736, 739, 748, 761, 763, 784
+, 790, 793, 802, 806, 818, 820, 833, 836, 847, 860, 863, 874, 881, 888, 899, 901
+, 904, 907, 910, 912, 913, 921, 923, 931, 932, 937, 940, 946, 964, 970, 973, 989
+, 998, 1000]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 3.365 s
+[INFO] Finished at: 2015-10-25T22:25:02+01:00
+[INFO] Final Memory: 14M/164M
+[INFO] ------------------------------------------------------------------------
+
+
+
+
+
+
